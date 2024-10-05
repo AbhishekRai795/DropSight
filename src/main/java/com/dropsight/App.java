@@ -1,5 +1,9 @@
 package com.dropsight;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 /**
  *
  *  Hello world!
@@ -8,15 +12,45 @@ package com.dropsight;
 public class App 
 {
     public static void main(String[] args) {
-        String excelFilePath = "C:\\Minor project\\dropsight\\Data\\Amazon_Mobile_Data 1.xlsx";  
-        String outputDirectory = "C:\\Minor project\\dropsight\\outputcsv"; // Replace with your desired output directory
-        String outputFileName = "Main_Data.csv";  // Name of the output file
-        int[] columnIndices = {1, 2, 3, 4};  // Column indices for B, C, D, E (1-based)
+        // Prompt user for the Excel file path
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String excelFilePath;
+        String outputDirectory;
+        String outputFileName;
+        int[] columnIndices;
 
         try {
-            // Step 1: Extract multiple column data from the Excel file and store it in the file system
+            // Get user input for Excel file path
+            System.out.print("Enter the path to the Excel file: ");
+            excelFilePath = reader.readLine();
+
+            // Get user input for output directory
+            System.out.print("Enter the output directory path: ");
+            outputDirectory = reader.readLine();
+
+            // Get user input for output file name
+            System.out.print("Enter the output file name (e.g., output.csv): ");
+            outputFileName = reader.readLine();
+
+            // Get user input for column indices to extract
+            System.out.print("Enter the column indices to extract (comma-separated, e.g., 2,3,4): ");
+            String columnInput = reader.readLine();
+            String[] columnStrings = columnInput.split(",");
+            columnIndices = new int[columnStrings.length];
+
+            for (int i = 0; i < columnStrings.length; i++) {
+                columnIndices[i] = Integer.parseInt(columnStrings[i].trim()); // Convert to int
+            }
+
+            // Extract multiple column data from the Excel file and store it in the file system
             ExcelExtractor extractor = new ExcelExtractor();
             extractor.extractAndStoreMultipleColumns(excelFilePath, columnIndices, outputDirectory, outputFileName);
+            System.out.println("Data extracted successfully!");
+
+        } catch (IOException e) {
+            System.out.println("An error occurred while reading input: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid column index format. Please ensure you're entering numbers.");
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
