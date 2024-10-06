@@ -3,6 +3,8 @@ package com.dropsight;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+
 
 /**
  *
@@ -47,6 +49,14 @@ public class App
             extractor.extractAndStoreMultipleColumns(excelFilePath, columnIndices, outputDirectory, outputFileName);
             System.out.println("Data extracted successfully!");
 
+            HashMapExt csvHandler = new HashMapExt();
+            HashMap<Integer, String[]> dataMap = csvHandler.readCSVToHashMap(outputDirectory + "\\" + outputFileName);
+    
+        // Process the dataMap as needed
+         for (Integer key : dataMap.keySet()) {
+            System.out.println("Row " + key + ": " + String.join(", ", dataMap.get(key)));
+    }
+
         } catch (IOException e) {
             System.out.println("An error occurred while reading input: " + e.getMessage());
         } catch (NumberFormatException e) {
@@ -54,5 +64,7 @@ public class App
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
+
+       
     }
 }
