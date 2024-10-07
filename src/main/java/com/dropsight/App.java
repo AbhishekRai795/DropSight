@@ -50,10 +50,10 @@ public class App
             System.out.println("Data extracted successfully!");
 
             HashMapExt csvHandler = new HashMapExt();
-            HashMap<Integer, String[]> dataMap = csvHandler.readCSVToHashMap(outputDirectory + "\\" + outputFileName);
+            HashMap<String, String[]> dataMap = csvHandler.readCSVToHashMap(outputDirectory + "\\" + outputFileName);
     
         // Process the dataMap as needed
-         for (Integer key : dataMap.keySet()) {
+         for (String key : dataMap.keySet()) {
             System.out.println("Row " + key + ": " + String.join(", ", dataMap.get(key)));
     }
 
