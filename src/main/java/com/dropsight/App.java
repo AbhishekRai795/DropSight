@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Scanner;
 
 
 /**
@@ -48,14 +49,40 @@ public class App
             ExcelExtractor extractor = new ExcelExtractor();
             extractor.extractAndStoreMultipleColumns(excelFilePath, columnIndices, outputDirectory, outputFileName);
             System.out.println("Data extracted successfully!");
+            //Hashmap extraction
+            HashMapExt hashMapExt = new HashMapExt();
+            String filePath = "C:\\Minor project\\dropsight\\outputcsv\\output.csv";  // Update with the correct path
+            HashMap<String, double[]> dataMap = hashMapExt.readCSVToHashMap(filePath);
 
-            HashMapExt csvHandler = new HashMapExt();
-            HashMap<String, String[]> dataMap = csvHandler.readCSVToHashMap(outputDirectory + "\\" + outputFileName);
+            ProbabilityCalculator calculator = new ProbabilityCalculator(dataMap);
+        
+            
+            double priorSuccess = 0.6;
+           
+
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Available products: ");
+            for (String productKey : dataMap.keySet()) {
+                System.out.println(productKey);
+            }
+
+
+            System.out.print("Enter the product key to calculate its success probability: ");
+            String productKey = scanner.nextLine();
+
+            if (dataMap.containsKey(productKey)) {
+                double successProbability = calculator.calculateSuccessProbability(productKey, priorSuccess);
+                System.out.println("Success Probability for " + productKey + ": " + successProbability*100);
+            } else {
+                System.out.println("Product not found.");
+            }
     
-        // Process the dataMap as needed
-         for (String key : dataMap.keySet()) {
-            System.out.println("Row " + key + ": " + String.join(", ", dataMap.get(key)));
-    }
+            scanner.close();
+    
+           
+            
+        
 
         } catch (IOException e) {
             System.out.println("An error occurred while reading input: " + e.getMessage());
@@ -64,6 +91,7 @@ public class App
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
+        
 
        
     }

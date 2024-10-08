@@ -1,28 +1,28 @@
 package com.dropsight;
+
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
 public class HashMapExt {
-    public HashMap<String, String[]> readCSVToHashMap(String filePath) {
-        HashMap<String, String[]> dataMap = new HashMap<>();
+    public HashMap<String, double[]> readCSVToHashMap(String filePath) {
+        HashMap<String, double[]> dataMap = new HashMap<>();
         try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
                 // Check if the row has at least one column
                 if (nextLine.length > 1) {
-                    // First column (index 0) will be the key
-                    String key = nextLine[0];
+                    String key = nextLine[0];  // First column is ProductID
 
-                    // Rest of the columns will be the values
-                    String[] values = new String[nextLine.length - 1];
-                    System.arraycopy(nextLine, 1, values, 0, nextLine.length - 1);
+                    // Extract numeric values for reviews, price, and sales
+                    double reviews = StringUtils.extractNumericValue(nextLine[1]);
+                    double price = StringUtils.extractNumericValue(nextLine[2]);
+                    double sales = StringUtils.extractNumericValue(nextLine[3]);
 
-                    // Add to the HashMap
-                    dataMap.put(key, values);
+                    // Store in HashMap with double[] array for reviews, price, sales
+                    dataMap.put(key, new double[]{reviews, price, sales});
                 }
             }
         } catch (IOException | CsvValidationException e) {
