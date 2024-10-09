@@ -17,8 +17,8 @@ public class HashMapExt {
                     String key = nextLine[0];  // First column is ProductID
 
                     // Extract numeric values for reviews, price, and sales
-                    double reviews = StringUtils.extractNumericValue(nextLine[1]);
-                    double price = StringUtils.extractNumericValue(nextLine[2]);
+                    double reviews = StringUtils.extractNumericValue(nextLine[2]);
+                    double price = StringUtils.extractNumericValue(nextLine[1]);
                     double sales = StringUtils.extractNumericValue(nextLine[3]);
 
                     // Store in HashMap with double[] array for reviews, price, sales
